@@ -12,12 +12,12 @@ export async function POST(req: Request) {
     const locale = String(form.get("locale") ?? "sr");
 
     await resend.emails.send({
-      from: process.env.EMAIL_FROM!,
-      to: process.env.EMAIL_TO!,
-      subject: `New booking inquiry (${locale}) from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nDate: ${date}\nMessage:\n${message}`,
-	  reply_to: email || undefined,
-    });
+	  from: process.env.EMAIL_FROM!,
+	  to: process.env.EMAIL_TO!,
+	  subject: `New booking inquiry (${locale}) from ${name}`,
+	  text: `Name: ${name}\nEmail: ${email}\nDate: ${date}\nMessage:\n${message}`,
+	  replyTo: email || undefined,   // ✅ correct key
+	});
 
     return new Response(null, { status: 204 });
   } catch (e) {
