@@ -13,16 +13,18 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  // ✅ match Next 15 typing (params is a Promise with string values)
   params,
 }: {
   children: React.ReactNode;
-  // ⬇︎ params is a Promise in Next 15
-  params: Promise<{ locale: "sr" | "en" }>;
+  params: Promise<Record<string, string>>;
 }) {
-  const { locale } = await params;
+  const { locale = "sr" } = await params;
+  // runtime narrow with fallback
+  const lang = locale === "sr" || locale === "en" ? locale : "sr";
 
   return (
-    <html lang={locale}>
+    <html lang={lang}>
       <body>{children}</body>
     </html>
   );
